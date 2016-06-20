@@ -22,11 +22,12 @@ func scanFile(path string, f os.FileInfo, err error) error {
     data, _ := ioutil.ReadFile(path)
     input := string(data)
    
-    html_quotes := `(\{\{\s*|\{\%.*?|:\s*)["'](.*?)["'].*?\|.*?(t|translate)(\(.*?\)|).*?(\}\}|\%\}|,)`
+    html_quotes := `(\{\{\s*|\(\s*|\{\%.*?|:\s*)["'](.*?)["'].*?\|\s*?(t|translate)\s*(\(|\||\}\}|\)|\%\}|,)`
 
     re := regexp.MustCompile(html_quotes)
     matches := re.FindAllStringSubmatch(input, -1)
     for i := range matches {
+      // fmt.Printf("%v\n\n", matches[i])
       keys = AppendIfMissing(keys,matches[i][2])
     }
   }
